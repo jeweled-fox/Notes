@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script type="module">
+  //import { saveAs } from 'file-saver';
+  </script>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Notepad</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="icon" 
+      type="image/png" 
+      href="/img/notepad.png">
+    <link rel="manifest" href="manifest.json">
+  </head>
+  <style>
+    body {
+      text-align:center;
+      font-family:Roboto;
+    }
+    .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <body>
+    <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0" nonce="y0orZyMC"></script>
+
+    <!--...-->
+    <h1>Online Free Notepad</h1>
+    <div style="display:non;" id="socials">
+      <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="BitBros&#39; Notepad is an easy to use website, providing a notepad and note-taking tools." data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
+      <div class="fb-share-button" data-href="https://notes.jeweledfox.repl.co/" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnotes.jeweledfox.repl.co%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+      <!--...-->
+    </div>
+    <div name="fileoptions" style="width:300px;text-align:center;background-color:#ededed"class="center">
+      <p style="font-size:10px;"><i>Saving tools</i></p>
+      <button onclick="savelocal()">Save</button>
+      <button onclick="getsave()">Load</button>
+      <button onclick="clearsave()">Clear save</button>
+      <button onclick="savefile()">Save to file</button>
+    </div>
+    <p style="font-size:13px;"><b id="lastautosave">Last autosave:</b></p>
+    <div name="textoptions" style="width:400px;text-align:center;background-color:#ededed;"class="center">
+      <p style="font-size:10px;"><i>Text tools</i></p>
+      <button onclick="pastetext()">Paste text from clipboard</button>
+      <button onclick="copytext()">Copy text to clipboard</button>
+      <button onclick="cleartext()">Clear notes</button>
+      <br><button onclick="insertbullet()">Insert - </button>
+      <select name="bullettype" id="bullettype" onchange="changebullettype()">
+        <option value="bullet">• Bullet</option>
+        <option value="arrow1">➔ Arrow</option>
+        <option value="arrow2">➤ Arrow</option>
+        <option value="arrow3">▶ Arrow</option>
+      </select>
+    </div>
+    <a href="help" target="popup" onclick="window.open('/help','popup','width=600,height=600'); return false;"><img src="img/help.svg" width="30" style="padding-top:20px;"></a>
+    <textarea id="boddy" style="width:1350px; height:800px; margin-top:100px; resize:none;" class="center">
+Start typing...
+    </textarea>
+    <div style="padding-bottom:50px;">
+      <h2><u>Advanced options</u></h2>
+      <div name="advancedoptions" style="border-width:0px;background-color:#ededed;width:400px;text-align:center;"class="center">
+        <h4><i>The page may have to be reloaded for changes to take effect.</i></h4>
+        <input type="checkbox" id="autoload" onchange="autoloadsave()">Autoload locally saved notes
+        <br><br>
+        <input type="checkbox" id="sonc" onchange="sonc()">Automatically save notes on clear
+        <br><br>
+        <input type="checkbox" id="autosavv" onchange="autosavve()">Autosave notes every
+        
+        <select id="leinterval">
+        <option value=60000>1 minute</option>
+        <option value=300000>5 minutes</option>
+        <option value=600000>10 minutes</option>
+        <option value=1800000>30 minutes</option>
+      </select>
+      </div>
+    </div>
+    <br><br><br><br><br><br>
+    <p><i id="copyright">Copyright © BitBros Technologies 2021. All rights reserved.</i></p>
+    <a href="https://BitBros.jeweledfox.repl.co"><img src="img/BitBros Tech.png" style="width:200px;"></a>
+  </body>
+  <script>
+    var currentbullet = "•";
+    var body = document.getElementById("boddy");
+    var upload = document.getElementById("upload");
+    var autoload = document.getElementById("autoload");
+    var saveclear = document.getElementById("sonc");
+    var bullettype = document.getElementById("bullettype")
+    var autosavv = document.getElementById("autosavv")
+    var lastautosave = document.getElementById("lastautosave")
+    function savefile() {
+      var blob = new Blob([boddy.value],
+        { type: "text/plain;charset=utf-8" });
+      saveAs(blob, "notes.txt");
+    }
+    function savelocal() {
+      localStorage.setItem("notepadsave", boddy.value);
+    }
+    function getsave() {
+      boddy.value = localStorage.getItem("notepadsave")
+    }
+    function autoloadsave() {
+      localStorage.setItem("autoloadsave", autoload.checked)
+    }
+    function sonc() {
+      localStorage.setItem("saveclear", saveclear.checked)
+    }
+    function autosavve() {
+      localStorage.setItem("autosavv", autosavv.checked)
+    }
+    async function pastetext() {
+      text = await navigator.clipboard.readText();
+      boddy.value = boddy.value.concat(text)
+    }
+    async function copytext() {
+      await navigator.clipboard.writeText(boddy.value);
+    }
+    function cleartext() {
+      if (saveclear.checked == true) {
+        savelocal()
+        console.log("autosaved")
+      }
+      boddy.value = ""
+    }
+    function clearsave() {
+      var c = confirm("Are you sure you want to clear the local save? All your notes that are not saved to a file will be lost. Note that this will also clear your Advanced option preferences.")
+      if (c == true) {
+        localStorage.clear();
+        console.log("local storage cleared.")
+      }
+    }
+    function insertbullet() {
+      boddy.value = boddy.value.concat(currentbullet)
+    }
+    function changebullettype() {
+      if (bullettype.value == "bullet") {
+        currentbullet = "•"
+      } else if (bullettype.value == "arrow1") {
+        currentbullet = "➔"
+      } else if (bullettype.value == "arrow2") {
+        currentbullet = "➤"
+      } else if (bullettype.value == "arrow3") {
+        currentbullet = "▶"
+      }
+    }
+    if (localStorage.getItem("autoloadsave") == "true" ){
+      autoload.setAttribute("checked", "true");
+      getsave()
+    }
+    if (localStorage.getItem("saveclear") == "true") {
+      saveclear.setAttribute("checked", "true")
+    }
+    if (localStorage.getItem("autosavv") == "true") {
+      leinterval = document.getElementById("leinterval")
+      autosavv.setAttribute("checked", "true")
+      setInterval(function(){savelocal();console.log("saved");localStorage.setItem("lastautosave",)})
+
+    }
+
+  </script>
+</html>
