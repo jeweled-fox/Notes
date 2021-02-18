@@ -10,6 +10,13 @@
     <title>Notepad</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">  
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300&display=swap" rel="stylesheet">
+    <!--~~~-->
     <link rel="icon" 
       type="image/png" 
       href="/img/notepad.png">
@@ -34,10 +41,11 @@
 
     <!--...-->
     <h1>Online Free Notepad</h1>
-    <div style="display:non;" id="socials">
+    <div style="display:;" id="socials">
       <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="BitBros&#39; Notepad is an easy to use website, providing a notepad and note-taking tools." data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
       <div class="fb-share-button" data-href="https://notes.jeweledfox.repl.co/" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnotes.jeweledfox.repl.co%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
-      <!--...-->
+      <!--...--><br><br>
+      <button style="font-size:10px;width:50px;background-color:white;" onclick="hidesocials()">Hide socials</button>
     </div>
     <div name="fileoptions" style="width:300px;text-align:center;background-color:#ededed"class="center">
       <p style="font-size:10px;"><i>Saving tools</i></p>
@@ -58,6 +66,14 @@
         <option value="arrow1">➔ Arrow</option>
         <option value="arrow2">➤ Arrow</option>
         <option value="arrow3">▶ Arrow</option>
+      </select><br>
+      Font: 
+      <select id="fonttype" onchange="changefonttype()">
+        <option value="">Default</option>
+        <option value="Roboto">Roboto</option>
+        <option value="Handlee">Handwriting</option>
+        <option value="Quattrocento">Fancy</option>
+        <option value="Khand">Thin</option>
       </select>
     </div>
     <a href="help" target="popup" onclick="window.open('/help','popup','width=600,height=600'); return false;"><img src="img/help.svg" width="30" style="padding-top:20px;"></a>
@@ -82,6 +98,7 @@ Start typing...
       </select>
       </div>
     </div>
+    <a href="/cookies">Use of cookies</a>
     <br><br><br><br><br><br>
     <p><i id="copyright">Copyright © BitBros Technologies 2021. All rights reserved.</i></p>
     <a href="https://BitBros.jeweledfox.repl.co"><img src="img/BitBros Tech.png" style="width:200px;"></a>
@@ -137,7 +154,10 @@ Start typing...
       }
     }
     function insertbullet() {
-      boddy.value = boddy.value.concat(currentbullet)
+      boddy.value = boddy.value.concat(currentbullet + " ")
+    }
+    function changefonttype() {
+      boddy.style.fontFamily = document.getElementById("fonttype").value
     }
     function changebullettype() {
       if (bullettype.value == "bullet") {
@@ -150,6 +170,9 @@ Start typing...
         currentbullet = "▶"
       }
     }
+    function hidesocials() {
+      document.getElementById("socials").style.display = "none"
+    }
     if (localStorage.getItem("autoloadsave") == "true" ){
       autoload.setAttribute("checked", "true");
       getsave()
@@ -157,10 +180,37 @@ Start typing...
     if (localStorage.getItem("saveclear") == "true") {
       saveclear.setAttribute("checked", "true")
     }
+    if (localStorage.getItem("lastautosave") !== "null") {
+      lastautosave.innerText = "Last autosave: " + localStorage.getItem("lastautosave")
+    }
     if (localStorage.getItem("autosavv") == "true") {
       leinterval = document.getElementById("leinterval")
       autosavv.setAttribute("checked", "true")
-      setInterval(function(){savelocal();console.log("saved");localStorage.setItem("lastautosave",)})
+      setInterval(function(){
+        savelocal();
+        console.log("saved");
+        var date = new Date()
+        monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+        var pm = "AM"
+        var hour = date.getHours()
+        if (hour > 12) {
+          var hour = hour - 12
+          var pm = "PM"
+        }
+        var minutes = date.getMinutes()
+        if (minutes < 10) {
+          var minutes = "0" + minutes
+        }
+        var month = monthNames[date.getMonth()];
+        var day = date.getDate();
+        var year = date.getFullYear();
+        var fulldate = hour + ":" + minutes +" " + pm + ", " + month + " " + day + " (" + year + ")"
+        console.log(fulldate)
+        localStorage.setItem("lastautosave",fulldate);
+        lastautosave.innerText = "Last autosave: " + fulldate
+        console.log("saved");
+        },leinterval.value)
 
     }
 
