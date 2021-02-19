@@ -53,8 +53,10 @@
       <button onclick="getsave()">Load</button>
       <button onclick="clearsave()">Clear save</button>
       <button onclick="savefile()">Save to file</button>
+      <p style="font-size:13px;"><i id="autosavestatus">Autosave is off</i></p>
+      <p style="font-size:13px;"><b id="lastautosave">Last autosave:</b></p>
     </div>
-    <p style="font-size:13px;"><b id="lastautosave">Last autosave:</b></p>
+    
     <div name="textoptions" style="width:400px;text-align:center;background-color:#ededed;"class="center">
       <p style="font-size:10px;"><i>Text tools</i></p>
       <button onclick="pastetext()">Paste text from clipboard</button>
@@ -186,6 +188,7 @@ Start typing...
     if (localStorage.getItem("autosavv") == "true") {
       leinterval = document.getElementById("leinterval")
       autosavv.setAttribute("checked", "true")
+      document.getElementById("autosavestatus").innerText = "Autosave is on"
       setInterval(function(){
         savelocal();
         console.log("saved");

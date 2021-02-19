@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Feature requests</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="icon" 
+      type="image/png" 
+      href="https://notes.jeweledfox.repl.co/img/notepad.png">
+</head>
+<style>
+  body {
+    font-family:Roboto;
+  }
+  h1 {
+    border-bottom: 1px solid #c0c0c0;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    white-space: nowrap;
+  }
+  </style>
+<body>
+  <h1>Submit a feature request</h1>
+  <textarea id="request" placeholder="What's your idea? Make sure that it's specific." style="width:750px; height:200px;"></textarea>
+  <br>
+  <button onclick="submitidea()">Submit</button>
+</body>
+<script>
+  var textarea = document.getElementById("request");
+  function submitidea() {
+    console.log("Submitting...")
+    textarea.value = ""
+    textarea.placeholder = "Thank you for submitting!"
+    textarea.setAttribute("readonly", "true");
+  }
+</script>
+</html>
